@@ -3,12 +3,18 @@
 public class Turret : MonoBehaviour {
 
 	private Transform target;
+	private float fireCountdown = 0f;
+
+	[Header("Attributes")]
 	public float range = 15f;
+	public float fireRate = 1f;
 	public float turnSpeed = 10f;
 
+	[Header("Unity Setup Fields")]
 	public string enemyTag = "Enemy";
-
 	public Transform partToRotate;
+	public GameObject bulletPrefab;
+	public Transform firePoint;
 
     void Start() {
     	// Calls UpdateTarget() once at the beginning (after 0f seconds) and then once every 0.5 seconds
@@ -20,6 +26,7 @@ public class Turret : MonoBehaviour {
     		return;
 
     	// Target lock on
+
     	// Get the rotation we need to apply to face the target
     	Vector3 dir = target.position - transform.position;
     	Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -29,7 +36,26 @@ public class Turret : MonoBehaviour {
     	Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
     	partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
+    	// Shoot
+    	if (fireCountdown <= 0f) {
+    		Shoot();
+    		fireCountdown = 1f / fireRate;
+    	}
+
+    	fireCountdown -= Time.deltaTime;
     }
+
+    void Shoot() {
+    	// The tutorial said to cast this to GameObject but I don't understand why. Instantiate should return an Object according to the documentation
+    	GameObject bulletGO = (GameObject) Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+    	// The variable type is Bullet because that is the name of our bullet script (Bullet.cs). bullet will contain a reference to that script
+    	Bullet bullet = bulletGO.GetComponent<Bullet>();
+
+    	if (bullet != null)
+    		bullet.Seek(target);
+    }
+
 
     void UpdateTarget() {
     	GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
