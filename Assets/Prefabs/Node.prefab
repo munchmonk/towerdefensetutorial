@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4917794496574836814}
   - component: {fileID: 8648518423699796316}
   - component: {fileID: 444701155660362099}
+  - component: {fileID: 7735550202842238010}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -95,3 +96,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7735550202842238010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751925800821458751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fccfd6b0cc43b44b2bb9e6b3699e9721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
+  positionOffset: {x: 0, y: 0.5, z: 0}
