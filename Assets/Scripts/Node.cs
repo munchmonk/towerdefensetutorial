@@ -7,12 +7,18 @@ public class Node : MonoBehaviour {
 	public Color hoverColor;
 	public Vector3 positionOffset;
 
+	// We might start the level with a turret prebuilt on a certain node if we wanted to
+	[Header("Optional")]
+	public GameObject turret;
+
 	private Renderer rend;
 	private Color startColor;
 
-	private GameObject turret;
-
 	BuildManager buildManager;
+
+	public Vector3 GetBuildPosition() {
+		return transform.position + positionOffset;
+	}
 
 	void Start() {
 		rend = GetComponent<Renderer>();
@@ -25,16 +31,18 @@ public class Node : MonoBehaviour {
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		if (buildManager.GetTurretToBuild() == null)
+		// Check that a turret is selected
+		if (!buildManager.CanBuild)
 			return;
 
+		// Check that there isn't already a turret built here
 		if (turret != null) {
 			Debug.Log("There is already a turret here!");
 			return;
 		}
 
-		GameObject turretToBuild = buildManager.GetTurretToBuild();
-		turret = (GameObject) Instantiate(turretToBuild, transform.position + positionOffset, transform.rotation);
+		// Build!
+		buildManager.BuildTurretOn(this);
 	}
 
 	void OnMouseEnter() {
@@ -43,7 +51,7 @@ public class Node : MonoBehaviour {
 			return;
 
 		// Don't highlight the node if we haven't selected a turret from the shop yet
-		if (buildManager.GetTurretToBuild() == null)
+		if (!buildManager.CanBuild)
 			return;
 
 		rend.material.color = hoverColor;

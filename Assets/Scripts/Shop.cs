@@ -3,15 +3,19 @@
 public class Shop : MonoBehaviour {
 	BuildManager buildManager;
 
+	// TurretBlueprint is the name of the class in the standalone script we created
+	public TurretBlueprint standardTurret;
+	public TurretBlueprint missileLauncher;
+
 	void Start() {
 		buildManager = BuildManager.instance;
 	}
 
-	public void PurchaseStandardTurret() {
-		buildManager.SetTurretToBuild(buildManager.standardTurretPrefab);
+	public void SelectStandardTurret() {
+		buildManager.SelectTurretToBuild(standardTurret);
 	}
 
-	public void PurchaseMissileLauncher() {
-		buildManager.SetTurretToBuild(buildManager.missileLauncherPrefab);
+	public void SelectMissileLauncher() {
+		buildManager.SelectTurretToBuild(missileLauncher);
 	}
 }
