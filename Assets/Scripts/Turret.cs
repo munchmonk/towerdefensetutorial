@@ -15,6 +15,8 @@ public class Turret : MonoBehaviour {
     [Header("Use laser")]
     public bool useLaser = false;
     public LineRenderer lineRenderer;
+    public ParticleSystem impactEffect;
+    public Light impactLight;
 
 	[Header("Unity Setup Fields")]
     public float turnSpeed = 10f;
@@ -31,8 +33,11 @@ public class Turret : MonoBehaviour {
         // No target
     	if (target == null) {
             if (useLaser)
-                if (lineRenderer.enabled)
+                if (lineRenderer.enabled) {
                     lineRenderer.enabled = false;
+                    impactEffect.Stop();
+                    impactLight.enabled = false;
+                }
     		return;
         }
 
@@ -54,12 +59,31 @@ public class Turret : MonoBehaviour {
     }
 
     void Laser() {
-        if (!lineRenderer.enabled)
+        if (!lineRenderer.enabled) {
+            // Laser beam
             lineRenderer.enabled = true;
 
+            // Particles
+            impactEffect.Play();
+
+            // Glowing light on target
+            impactLight.enabled = true;
+        }
+
+        // Laser
         // LineRenderer has two positions, start (0) and finish (1)
         lineRenderer.SetPosition(0, firePoint.position);
         lineRenderer.SetPosition(1, target.position);
+
+        // Particles
+        // Move and rotate the particles so that they face the turret and spawn from the outside of the enemy (instead of from its centre)
+        Vector3 dir = firePoint.position - target.position;
+
+        // Scale by 1f because in our specific case the enemy happens to have radius 1 - this spawns the particles just outside of the enemy
+        impactEffect.transform.position = target.position + dir.normalized * 1f;
+        impactEffect.transform.rotation = Quaternion.LookRotation(dir);
+
+        
     }
 
     void LockOnTarget() {
