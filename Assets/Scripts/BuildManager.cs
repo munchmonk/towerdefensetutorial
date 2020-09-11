@@ -10,6 +10,8 @@ public class BuildManager : MonoBehaviour {
 	public GameObject standardTurretPrefab;
 	public GameObject missileLauncherPrefab;
 
+	public GameObject buildEffect;
+
 	void Awake() {
 		if (instance != null) {
 			Debug.Log("More than one BuildManager in Scene (should be a singleton!)");
@@ -20,6 +22,7 @@ public class BuildManager : MonoBehaviour {
 
 	// Property; a variable that cannot be set, only read
 	public bool CanBuild { get { return turretToBuild != null; } }
+	public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
 
 	public void SelectTurretToBuild(TurretBlueprint turret) {
 		turretToBuild = turret;
@@ -36,7 +39,11 @@ public class BuildManager : MonoBehaviour {
 		GameObject turret = (GameObject) Instantiate(turretToBuild.prefab, node.GetBuildPosition(), Quaternion.identity);
 		node.turret = turret;
 
-		Debug.Log("Turret build, money left: " + PlayerStats.Money);
+		// Create particles and delete them after 5 seconds
+		GameObject effect = (GameObject) Instantiate(buildEffect, node.GetBuildPosition(), Quaternion.identity);
+		Destroy(effect, 5f);
+
+		Debug.Log("Turret built, money left: " + PlayerStats.Money);
 	}
 
 }

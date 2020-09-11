@@ -23,7 +23,11 @@ public class WaveSpawner : MonoBehaviour {
 
     	countdown -= Time.deltaTime;
 
-    	waveCountdownText.text = Mathf.Round(countdown).ToString();
+        // Make sure it's not accidentally negative
+        countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
+
+        // Format it to show two deciml places
+    	waveCountdownText.text = string.Format("{0:00.00}", countdown);
     }
 
     IEnumerator SpawnWave() {

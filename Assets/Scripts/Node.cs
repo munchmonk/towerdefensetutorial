@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 	public Color hoverColor;
+	public Color notEnoughMoneyColor;
 	public Vector3 positionOffset;
 
 	// We might start the level with a turret prebuilt on a certain node if we wanted to
@@ -54,7 +55,12 @@ public class Node : MonoBehaviour {
 		if (!buildManager.CanBuild)
 			return;
 
-		rend.material.color = hoverColor;
+		if (buildManager.HasMoney) 
+			// Highlight the node we mouse over
+			rend.material.color = hoverColor;
+		else
+			// Highlight with a different colour if we can't afford it
+			rend.material.color = notEnoughMoneyColor;
 	}
 
 	void OnMouseExit() {
