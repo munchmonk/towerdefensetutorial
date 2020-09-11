@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 
 	public float speed = 70f;
 	public float explosionRadius = 0f;
+	public int damage = 50;
 	public GameObject impactEffect;
 
 	// To be called by the turret that instantiates this bullet to pass it its target
@@ -57,7 +58,12 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void Damage(Transform enemy) {
-		Destroy(enemy.gameObject);
+		// Enemy is the name of the class inside the Enemy script
+		Enemy e = enemy.GetComponent<Enemy>();
+
+		// In case the enemy doesn't have a script for whatever reason
+		if (e != null)
+			e.TakeDamage(damage);
 	}
 
 	void Explode() {

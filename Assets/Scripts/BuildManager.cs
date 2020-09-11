@@ -42,8 +42,6 @@ public class BuildManager : MonoBehaviour {
 		// Create particles and delete them after 5 seconds
 		GameObject effect = (GameObject) Instantiate(buildEffect, node.GetBuildPosition(), Quaternion.identity);
 		Destroy(effect, 5f);
-
-		Debug.Log("Turret built, money left: " + PlayerStats.Money);
 	}
 
 }
