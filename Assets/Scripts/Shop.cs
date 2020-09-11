@@ -6,6 +6,7 @@ public class Shop : MonoBehaviour {
 	// TurretBlueprint is the name of the class in the standalone script we created
 	public TurretBlueprint standardTurret;
 	public TurretBlueprint missileLauncher;
+	public TurretBlueprint laserBeamer;
 
 	void Start() {
 		buildManager = BuildManager.instance;
@@ -17,5 +18,9 @@ public class Shop : MonoBehaviour {
 
 	public void SelectMissileLauncher() {
 		buildManager.SelectTurretToBuild(missileLauncher);
+	}
+
+	public void SelectLaserBeamer() {
+		buildManager.SelectTurretToBuild(laserBeamer);
 	}
 }

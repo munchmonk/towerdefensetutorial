@@ -3,17 +3,23 @@
 public class Turret : MonoBehaviour {
 
 	private Transform target;
-	private float fireCountdown = 0f;
 
-	[Header("Attributes")]
+	[Header("General")]
 	public float range = 15f;
+
+    [Header("Use bullets (default)")]
+    public GameObject bulletPrefab;
 	public float fireRate = 1f;
-	public float turnSpeed = 10f;
+    private float fireCountdown = 0f;
+
+    [Header("Use laser")]
+    public bool useLaser = false;
+    public LineRenderer lineRenderer;
 
 	[Header("Unity Setup Fields")]
+    public float turnSpeed = 10f;
 	public string enemyTag = "Enemy";
 	public Transform partToRotate;
-	public GameObject bulletPrefab;
 	public Transform firePoint;
 
     void Start() {
@@ -22,27 +28,49 @@ public class Turret : MonoBehaviour {
     }
 
     void Update() {
-    	if (target == null)
+        // No target
+    	if (target == null) {
+            if (useLaser)
+                if (lineRenderer.enabled)
+                    lineRenderer.enabled = false;
     		return;
+        }
 
     	// Target lock on
+        LockOnTarget();
 
-    	// Get the rotation we need to apply to face the target
-    	Vector3 dir = target.position - transform.position;
-    	Quaternion lookRotation = Quaternion.LookRotation(dir);
+        if (useLaser) 
+            Laser();
 
-    	// Lerp smoothes the transition between our current angle (partToRotate.rotation) and our desired angle (lookRotation) at a certain speed
-    	// We then convert the quaternion to euler angles because we only want to rotate on the Y axis
-    	Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-    	partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        // Bullets
+        else {
+        	// Shoot
+        	if (fireCountdown <= 0f) {
+        		Shoot();
+        		fireCountdown = 1f / fireRate;
+        	}
+        	fireCountdown -= Time.deltaTime;
+        }
+    }
 
-    	// Shoot
-    	if (fireCountdown <= 0f) {
-    		Shoot();
-    		fireCountdown = 1f / fireRate;
-    	}
+    void Laser() {
+        if (!lineRenderer.enabled)
+            lineRenderer.enabled = true;
 
-    	fireCountdown -= Time.deltaTime;
+        // LineRenderer has two positions, start (0) and finish (1)
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, target.position);
+    }
+
+    void LockOnTarget() {
+        // Get the rotation we need to apply to face the target
+        Vector3 dir = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+
+        // Lerp smoothes the transition between our current angle (partToRotate.rotation) and our desired angle (lookRotation) at a certain speed
+        // We then convert the quaternion to euler angles because we only want to rotate on the Y axis
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+        partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 
     void Shoot() {
