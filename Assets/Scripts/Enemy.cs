@@ -13,13 +13,16 @@ public class Enemy : MonoBehaviour {
 
 	public GameObject deathEffect;
 
+	// Removes a bug where two lasers locked on the same target grant double money when the enemy dies. Self implemented, might be fixed in a later video
+	private bool hasDied = false;
+
 	void Start() {
 		speed = startSpeed;
 	}
 
 	public void TakeDamage(float amount) {
 		health -= amount;
-		if (health <= 0)
+		if (health <= 0) 
 			Die();
 	}
 
@@ -28,7 +31,10 @@ public class Enemy : MonoBehaviour {
 	}	
 
 	void Die() {
-		PlayerStats.Money += worth;
+		if (!hasDied) {
+			hasDied = true;
+			PlayerStats.Money += worth;
+		}
 
 		// Particles
 		GameObject effect = (GameObject) Instantiate(deathEffect, transform.position, Quaternion.identity);

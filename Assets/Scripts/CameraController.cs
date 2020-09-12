@@ -11,6 +11,12 @@ public class CameraController : MonoBehaviour {
 	public float maxY = 80f;
 
 	void Update() {
+		if (GameManager.GameIsOver) {
+			// Disable this script. "this." is redundant, "enabled = false" works just as well
+			this.enabled = false;
+			return;
+		}
+
 		// ------------------------------------------------------------------------------------------------------------
 		// Escape disables (toggles) camera movement - useful for working in the inspector
 		if (Input.GetKeyDown(KeyCode.Escape))
