@@ -3,8 +3,6 @@
 public class GameManager : MonoBehaviour {
 	private bool gameEnded = false;
 
-
-
 	void Update() {
 		if (gameEnded)
 			return;
