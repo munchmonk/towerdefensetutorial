@@ -8,9 +8,13 @@ public class Node : MonoBehaviour {
 	public Color notEnoughMoneyColor;
 	public Vector3 positionOffset;
 
-	// We might start the level with a turret prebuilt on a certain node if we wanted to
-	[Header("Optional")]
+	// We need these variables to be public but we don't want them to be editable in the inspector
+	[HideInInspector]
 	public GameObject turret;
+	[HideInInspector]
+	public TurretBlueprint turretBlueprint;
+	[HideInInspector]
+	public bool isUpgraded = false;
 
 	private Renderer rend;
 	private Color startColor;
@@ -32,7 +36,7 @@ public class Node : MonoBehaviour {
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		// If there isn't a turret built here, select the node
+		// If there is a turret built here, select the node
 		if (turret != null) {
 			buildManager.SelectNode(this);
 		}
@@ -42,7 +46,45 @@ public class Node : MonoBehaviour {
 			return;
 
 		// Build!
-		buildManager.BuildTurretOn(this);
+		BuildTurret(buildManager.GetTurretToBuild());
+	}
+
+	void BuildTurret(TurretBlueprint blueprint) {
+		if (PlayerStats.Money < blueprint.cost) {
+			Debug.Log("Not enough money to build that!");
+			return;
+		}
+
+		PlayerStats.Money -= blueprint.cost;
+
+		GameObject _turret = (GameObject) Instantiate(blueprint.prefab, GetBuildPosition(), Quaternion.identity);
+		turret = _turret;
+		turretBlueprint = blueprint;
+
+		// Create particles and delete them after 5 seconds
+		GameObject effect = (GameObject) Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+		Destroy(effect, 5f);
+	}
+
+	public void UpgradeTurret() {
+		if (PlayerStats.Money < turretBlueprint.upgradeCost) {
+			Debug.Log("Not enough money to upgrade that!");
+			return;
+		}
+
+		PlayerStats.Money -= turretBlueprint.upgradeCost;
+
+		// Remove the old turret to avoid having two on the same node
+		Destroy(turret);
+
+		GameObject _turret = (GameObject) Instantiate(turretBlueprint.upgradedPrefab, GetBuildPosition(), Quaternion.identity);
+		turret = _turret;
+
+		// Create particles and delete them after 5 seconds
+		GameObject effect = (GameObject) Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
+		Destroy(effect, 5f);
+
+		isUpgraded = true;
 	}
 
 	void OnMouseEnter() {

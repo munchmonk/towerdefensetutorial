@@ -46,20 +46,7 @@ public class BuildManager : MonoBehaviour {
 		DeselectNode();
 	}
 
-	public void BuildTurretOn(Node node) {
-		if (PlayerStats.Money < turretToBuild.cost) {
-			Debug.Log("Not enough money to build that!");
-			return;
-		}
-
-		PlayerStats.Money -= turretToBuild.cost;
-
-		GameObject turret = (GameObject) Instantiate(turretToBuild.prefab, node.GetBuildPosition(), Quaternion.identity);
-		node.turret = turret;
-
-		// Create particles and delete them after 5 seconds
-		GameObject effect = (GameObject) Instantiate(buildEffect, node.GetBuildPosition(), Quaternion.identity);
-		Destroy(effect, 5f);
+	public TurretBlueprint GetTurretToBuild() {
+		return turretToBuild;
 	}
-
 }
