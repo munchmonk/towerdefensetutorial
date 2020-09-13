@@ -1,20 +1,11 @@
 ﻿using UnityEngine;
 
-// To reference Text
-using UnityEngine.UI;
-
 // To reference SceneManager
 using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour {
-	public Text roundsText;
 	public string menuSceneName = "MainMenu";
 	public SceneFader sceneFader;
-
-	// Similar to Start(), gets called every time the object is enabled
-	void OnEnable() {
-		roundsText.text = PlayerStats.Rounds.ToString();
-	}
 
 	public void Retry() {
 		// Reload the Scene

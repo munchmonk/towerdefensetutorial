@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour {
 	public void TakeDamage(float amount) {
 		health -= amount;
 		healthBar.fillAmount = health / startHealth;
-		if (health <= 0) 
+		if (health <= 0 && !hasDied) 
 			Die();
 	}
 
@@ -39,10 +39,9 @@ public class Enemy : MonoBehaviour {
 	}	
 
 	void Die() {
-		if (!hasDied) {
-			hasDied = true;
-			PlayerStats.Money += worth;
-		}
+		hasDied = true;
+		
+		PlayerStats.Money += worth;
 
 		// Particles
 		GameObject effect = (GameObject) Instantiate(deathEffect, transform.position, Quaternion.identity);
