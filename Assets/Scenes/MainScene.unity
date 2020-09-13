@@ -1402,7 +1402,7 @@ GameObject:
   - component: {fileID: 203558413}
   - component: {fileID: 203558412}
   m_Layer: 0
-  m_Name: Cost
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6996,13 +6996,13 @@ MonoBehaviour:
   missileLauncher:
     prefab: {fileID: 3291583704236898087, guid: 7cf05d9a1e30d4518a82189285f9759b, type: 3}
     cost: 250
-    upgradedPrefab: {fileID: 0}
-    upgradeCost: 0
+    upgradedPrefab: {fileID: 3291583704236898087, guid: 3c7237290003a44f3ae0fb05879a91d6, type: 3}
+    upgradeCost: 150
   laserBeamer:
     prefab: {fileID: 5437302086218468102, guid: c41b32e9265b64d7fad0cff24d77cd79, type: 3}
     cost: 350
-    upgradedPrefab: {fileID: 0}
-    upgradeCost: 0
+    upgradedPrefab: {fileID: 5437302086218468102, guid: 09107e65810e24d149c140a81fc86934, type: 3}
+    upgradeCost: 250
 --- !u!4 &812535320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6253828592894635175, guid: e503c82de48c7490e86c3404ebc2509c, type: 3}
@@ -10574,6 +10574,7 @@ MonoBehaviour:
   ui: {fileID: 787140754}
   upgradeCost: {fileID: 664338709}
   upgradeButton: {fileID: 1271287762}
+  sellAmount: {fileID: 203558412}
 --- !u!4 &1199835671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6253828592894635175, guid: e503c82de48c7490e86c3404ebc2509c, type: 3}
@@ -15030,6 +15031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeUI: {fileID: 1189841457}
   buildEffect: {fileID: 1423377338839360063, guid: 85f36a8cc1ba04a5ab8a2e16bc902ab1, type: 3}
+  sellEffect: {fileID: 1423377338839360063, guid: 6d35e15d9e0f246c1af193a333c2e70e, type: 3}
 --- !u!114 &1640782491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17230,7 +17232,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1887042509}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1189841457}
+        m_TargetAssemblyTypeName: NodeUI, Assembly-CSharp
+        m_MethodName: Sell
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1887042509
 MonoBehaviour:
   m_ObjectHideFlags: 0

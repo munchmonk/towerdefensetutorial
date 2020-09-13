@@ -87,6 +87,19 @@ public class Node : MonoBehaviour {
 		isUpgraded = true;
 	}
 
+	public void SellTurret() {
+		PlayerStats.Money += turretBlueprint.GetSellAmount();
+
+		// Create particles and delete them after 5 seconds
+		GameObject effect = (GameObject) Instantiate(buildManager.sellEffect, GetBuildPosition(), Quaternion.identity);
+		Destroy(effect, 5f);
+
+		Destroy(turret);
+		turretBlueprint = null;
+		isUpgraded = false;
+
+	}
+
 	void OnMouseEnter() {
 		// Don't highlight a node if there is a UI GameObject over it (i.e. the shop)
 		if (EventSystem.current.IsPointerOverGameObject())
