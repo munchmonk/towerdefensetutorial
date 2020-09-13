@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour {
 
 		// ------------------------------------------------------------------------------------------------------------
 		// Escape disables (toggles) camera movement - useful for working in the inspector
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.L))
 			doMovement = !doMovement;
 
 		if (!doMovement)
