@@ -3638,6 +3638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundsText: {fileID: 940797492}
+  menuScene: MainMenu
 --- !u!95 &454481550
 Animator:
   serializedVersion: 3
@@ -15821,6 +15822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui: {fileID: 962427610}
+  menuScene: MainMenu
 --- !u!4 &1649830570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6253828592894635175, guid: e503c82de48c7490e86c3404ebc2509c, type: 3}
