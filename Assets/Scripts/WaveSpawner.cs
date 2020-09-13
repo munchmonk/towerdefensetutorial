@@ -16,6 +16,8 @@ public class WaveSpawner : MonoBehaviour {
     public Text waveCountdownText;
     public float timeBetweenWaves = 5f;
 
+    public GameManager gameManager;
+
     private float countdown = 2f;
     private int waveIndex = 0;
 
@@ -28,6 +30,14 @@ public class WaveSpawner : MonoBehaviour {
         // Only countdown if we have killed the wave
         if (EnemiesAlive > 0)
             return;
+
+        // Win the level - change from the tutorial, it was bugged
+        if (waveIndex == waves.Length) {
+            gameManager.WinLevel();
+
+            // Disable this script to stop spawning waves after we cleared them all
+            this.enabled = false;
+        }
 
     	if (countdown <= 0f) {
     		StartCoroutine(SpawnWave());
@@ -51,6 +61,10 @@ public class WaveSpawner : MonoBehaviour {
 
         Wave wave = waves[waveIndex];
 
+        // Set the total number of EnemiesAlive here so that it doesn't bug out if we kill all the visible ones before the whole
+        // wave is done spawning
+        EnemiesAlive = wave.count;
+
     	for(int i = 0; i < wave.count; i++) {
     		SpawnEnemy(wave.enemy);
     		yield return new WaitForSeconds(1f / wave.rate);
@@ -58,16 +72,17 @@ public class WaveSpawner : MonoBehaviour {
 
         waveIndex++;
 
+        /*
         if (waveIndex == waves.Length) {
-            Debug.Log("LEVEL CLEARED");
+            gameManager.WinLevel();
 
             // Disable this script to stop spawning waves after we cleared them all
             this.enabled = false;
         }
+        */
     }
 
     void SpawnEnemy(GameObject enemy) {
     	Instantiate(enemy, spawnPoint.position, spawnPoint.rotation);
-        EnemiesAlive++;
     }
 }
