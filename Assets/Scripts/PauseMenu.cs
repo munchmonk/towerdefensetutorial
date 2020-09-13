@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
     public GameObject ui;
-    public string menuScene = "MainMenu";
+    public string menuSceneName = "MainMenu";
+    public SceneFader sceneFader;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) 
@@ -24,10 +25,14 @@ public class PauseMenu : MonoBehaviour {
 
     public void Retry() {
         Toggle();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // SceneFader implemented the load with a name (string), but it's normally a buildIndex (int) 
+        // (check LoadScene documentation for reference)
+        sceneFader.FadeTo(SceneManager.GetActiveScene().name);
     }
 
     public void Menu() {
-        SceneManager.LoadScene(menuScene);
+        Toggle();
+        sceneFader.FadeTo(menuSceneName);
     }
 }
