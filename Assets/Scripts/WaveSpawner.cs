@@ -19,6 +19,11 @@ public class WaveSpawner : MonoBehaviour {
     private float countdown = 2f;
     private int waveIndex = 0;
 
+    void Start() {
+        // Removes a bug where restarting the level keeps EnemiesAlive not at 0 (due to it being static)
+        EnemiesAlive = 0;
+    }
+
     void Update() {
         // Only countdown if we have killed the wave
         if (EnemiesAlive > 0)
